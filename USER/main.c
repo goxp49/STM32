@@ -22,8 +22,39 @@
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
 #include <stdio.h>
+
+#include "led.h"
+#include "usart.h"
+#include "dma.h"
+
+extern u8 SendBuff[SEND_BUFF_LENGTH];
+
+void dma2usart1(void);
+
 int main(void)
 {
-	while(1);
+	dma2usart1();
+
 }
 
+
+void dma2usart1(void)
+{
+	u32 i;
+
+	USART1_Config();
+	DMA_Config();
+	LED_GPIO_Config();
+
+	for(i=0;i<SEND_BUFF_LENGTH;i++)
+	{
+		SendBuff[i] = 0xff;
+	}
+
+	/*  DMA开始向USART发送数据 */
+	USART_DMACmd( USART1, USART_DMAReq_Tx, ENABLE);
+
+	LED1(ON);
+
+	while(1);
+}
