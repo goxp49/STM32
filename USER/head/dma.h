@@ -2,7 +2,6 @@
 #define __DMA_H
 
 #include "stm32f10x.h"
-#include <stdio.h>
 
 
 #define SEND_BUFF_LENGTH 		5000

@@ -23,9 +23,10 @@
 #include "stm32f10x.h"
 #include <stdio.h>
 
+#include "dma.h"
 #include "led.h"
 #include "usart.h"
-#include "dma.h"
+
 
 extern u8 SendBuff[SEND_BUFF_LENGTH];
 
