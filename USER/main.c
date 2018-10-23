@@ -26,6 +26,7 @@
 
 #include "usart.h"
 #include "adc.h"
+#include "led.h"
 
 extern __IO u16 ADC_ConvertedValue;
 float ADC_Result;
@@ -75,13 +76,18 @@ void adc2usart1(void)
 {
 	USART1_Config();
 	//ADC1_Config();
+	LED_GPIO_Config();
 
-	printf("ADC START!");
+	LED1(ON);
+	USART_SendMessage('S');
+
 
 	while(1)
 	{
-		//ADC_Result = (float)ADC_ConvertedValue/4096*3.3;
-		printf(" current adc result: %f", ADC_Result);
-		delay_ms(1000);
+		LED1(OFF);
+		delay_ms(0x00af);
+		USART_SendMessage('A');
+		LED1(ON);
+		delay_ms(0x00af);
 	}
 }

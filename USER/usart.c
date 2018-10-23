@@ -27,11 +27,11 @@ void USART1_Config(void)
 	/* 配置RX设定 */
 	gpio_initSturcture.GPIO_Mode = GPIO_Mode_IN_FLOATING;
 	gpio_initSturcture.GPIO_Pin = GPIO_Pin_10;
-	gpio_initSturcture.GPIO_Speed = GPIO_Speed_50MHz;
+	//gpio_initSturcture.GPIO_Speed = GPIO_Speed_50MHz;
 	GPIO_Init(GPIOA,&gpio_initSturcture);
 
 	/* USART1设定 */
-	usart_initSturcture.USART_BaudRate = 9600;
+	usart_initSturcture.USART_BaudRate = 115200;
 	usart_initSturcture.USART_HardwareFlowControl = USART_HardwareFlowControl_None;
 	usart_initSturcture.USART_Mode = USART_Mode_Rx|USART_Mode_Tx;
 	usart_initSturcture.USART_Parity = USART_Parity_No;
@@ -45,10 +45,9 @@ void USART1_Config(void)
 }
 
 
-int fputc(int ch, FILE *f)
+void USART_SendMessage(uint16_t DataToSend)
 {
-	USART_SendData(USART1,(unsigned char)ch);
+	USART_SendData(USART1,DataToSend);
 	/* 检查是否发送完毕 */
-	while(USART_GetFlagStatus(USART1,USART_FLAG_TC) != SET);
-	return ch;
+	while(USART_GetFlagStatus(USART1, USART_FLAG_TXE) == RESET);
 }

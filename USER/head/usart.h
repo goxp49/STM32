@@ -3,6 +3,6 @@
 
 
 void USART1_Config(void);
-int fputc(int ch, FILE *f);
+void USART_SendMessage(uint16_t DataToSend);
 
 #endif

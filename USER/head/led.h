@@ -25,6 +25,7 @@
 					GPIO_SetBits(GPIOC,GPIO_Pin_2);\
 					else		\
 					GPIO_ResetBits(GPIOC,GPIO_Pin_2)
+					  	
 
 void LED_GPIO_Config(void);
 
