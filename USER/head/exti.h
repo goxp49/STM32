@@ -4,7 +4,7 @@
 #include "stm32f10x.h"
 
 void NVIC_Config(void);
-void EXTI_Config(void);
+void EXTI_NVIC_Config(void);
 
 #endif /* __EXTI_H */
 

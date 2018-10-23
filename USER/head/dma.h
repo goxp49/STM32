@@ -9,7 +9,7 @@
 
 
 void NVIC_Config(void);
-void DMA_Config(void);
+void DMA_NVIC_Config(void);
 
 
 #endif

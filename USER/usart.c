@@ -4,7 +4,7 @@
 
  * 库版本  ：ST3.5.0
  *
- * 作者    ：wildfire team
+ * 作者    ：goxp49
 **********************************************************************************/
 #include "stm32f10x.h"
 #include <stdio.h>
@@ -16,7 +16,7 @@ void USART1_Config(void)
 	USART_InitTypeDef usart_initSturcture;
 
 	/* 使能时钟,USART1复用在PA8 ~ PA12 ,TX ->9, RX->10*/
-	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_USART1, ENABLE);
+	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA|RCC_APB2Periph_USART1|RCC_APB2Periph_AFIO, ENABLE);
 
 	/* 配置TX设定 */
 	gpio_initSturcture.GPIO_Mode = GPIO_Mode_AF_PP;

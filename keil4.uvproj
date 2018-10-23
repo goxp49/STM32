@@ -420,6 +420,16 @@
               <FileType>1</FileType>
               <FilePath>.\USER\exti.c</FilePath>
             </File>
+            <File>
+              <FileName>adc.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\adc.c</FilePath>
+            </File>
+            <File>
+              <FileName>delay.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\delay.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

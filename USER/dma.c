@@ -10,7 +10,7 @@
 
 u8 SendBuff[SEND_BUFF_LENGTH];
 
-void NVIC_Config(void)
+void DMA_NVIC_Config(void)
 {
 	NVIC_InitTypeDef nvic_initStructure;
 
@@ -29,7 +29,7 @@ void DMA_Config(void)
 
 	RCC_AHBPeriphClockCmd(RCC_AHBPeriph_DMA1, ENABLE);
 
-	NVIC_Config();
+	DMA_NVIC_Config();
 
 	/* …Ë÷√ª∫¥Ê∆˜≥§∂» */
 	//dma_initStructure.DMA_BufferSize = SEND_BUFF_LENGTH;

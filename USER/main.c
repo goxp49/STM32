@@ -21,23 +21,32 @@
 
 /* Includes ------------------------------------------------------------------*/
 #include "stm32f10x.h"
+#include "delay.h"
 #include <stdio.h>
+
+#include "usart.h"
+#include "adc.h"
+
+extern __IO u16 ADC_ConvertedValue;
+float ADC_Result;
+
+
+
+void adc2usart1(void);
+
+int main(void)
+{
+	adc2usart1();
+
+}
+
+
+#if(0)
 
 #include "dma.h"
 #include "led.h"
 #include "usart.h"
-
-
 extern u8 SendBuff[SEND_BUFF_LENGTH];
-
-void dma2usart1(void);
-
-int main(void)
-{
-	dma2usart1();
-
-}
-
 
 void dma2usart1(void)
 {
@@ -58,4 +67,21 @@ void dma2usart1(void)
 	LED1(ON);
 
 	while(1);
+}
+#endif
+
+/*  通过DMA将ADC采集结果发送到USART1中 */
+void adc2usart1(void)
+{
+	USART1_Config();
+	//ADC1_Config();
+
+	printf("ADC START!");
+
+	while(1)
+	{
+		//ADC_Result = (float)ADC_ConvertedValue/4096*3.3;
+		printf(" current adc result: %f", ADC_Result);
+		delay_ms(1000);
+	}
 }

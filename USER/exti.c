@@ -20,7 +20,7 @@
  */
 #include "exti.h"
 
-void NVIC_Config(void)
+void EXTI_NVIC_Config(void)
 {
 	NVIC_InitTypeDef nvic_initStructure;
 
@@ -46,7 +46,7 @@ void EXTI_Config(void)
 	RCC_APB2PeriphClockCmd(RCC_APB2Periph_GPIOA | RCC_APB2Periph_AFIO, ENABLE);
 
 	/* 设置 NVIC */
-	NVIC_Config();
+	EXTI_NVIC_Config();
 
 	/* 设置GPIO设定 */
 	gpio_initStructure.GPIO_Pin = GPIO_Pin_0;
@@ -60,5 +60,5 @@ void EXTI_Config(void)
 	exti_initStructure.EXTI_Mode = EXTI_Mode_Interrupt;
 	exti_initStructure.EXTI_Trigger = EXTI_Trigger_Falling;
 	EXTI_Init(&exti_initStructure);
-	
+
 }
