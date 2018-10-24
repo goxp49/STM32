@@ -24,7 +24,6 @@
 #include "delay.h"
 #include <stdio.h>
 
-#include "usart.h"
 #include "adc.h"
 #include "led.h"
 
@@ -33,11 +32,11 @@ float ADC_Result;
 
 
 
-void adc2usart1(void);
+void ADCAndDMA(void);
 
 int main(void)
 {
-	adc2usart1();
+	ADCAndDMA();
 
 }
 
@@ -49,7 +48,7 @@ int main(void)
 #include "usart.h"
 extern u8 SendBuff[SEND_BUFF_LENGTH];
 
-void dma2usart1(void)
+void DMA2Usart1(void)
 {
 	u32 i;
 
@@ -72,22 +71,20 @@ void dma2usart1(void)
 #endif
 
 /*  通过DMA将ADC采集结果发送到USART1中 */
-void adc2usart1(void)
+void ADCAndDMA(void)
 {
-	USART1_Config();
-	//ADC1_Config();
+	ADC1_IT_Config();
 	LED_GPIO_Config();
-
-	LED1(ON);
-	USART_SendMessage('S');
-
+	LED3(ON);
 
 	while(1)
 	{
-		LED1(OFF);
-		delay_ms(0x00af);
-		USART_SendMessage('A');
-		LED1(ON);
-		delay_ms(0x00af);
+		ADC_Result = (float)ADC_ConvertedValue/4096*3.3;
+		if(ADC_Result > 1.65)
+		{
+			LED1(ON);
+		}else{
+			LED1(OFF);
+		}
 	}
 }

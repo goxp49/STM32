@@ -5,7 +5,8 @@
 
 #define ADC1_DR_BASE	(ADC1_BASE + 0x4c)
 
-void ADC1_Config(void);
+void ADC1_IT_Config(void);
+void ADC1_DMA_Config(void);
 
 
 #endif

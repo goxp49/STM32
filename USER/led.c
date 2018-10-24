@@ -44,5 +44,9 @@ void LED_GPIO_Config(void)
 	GPIO_SetBits(GPIOC, GPIO_Pin_0 | GPIO_Pin_1 | GPIO_Pin_2);
 }
 
+void LED1_Switch(void)
+{
+	GPIO_WriteBit(GPIOC,GPIO_Pin_0,(BitAction)(1-(GPIO_ReadOutputDataBit(GPIOC,GPIO_Pin_0))));
+}
 
 /******************* (C) COPYRIGHT 2012 WildFire Team *****END OF FILE************/
