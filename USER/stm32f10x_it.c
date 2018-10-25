@@ -156,21 +156,35 @@ void SysTick_Handler(void)
   * @}
   */
 
+void DMA1_Channel4_IRQHandler(void)
+{
+	//ºÏ≤‚ «∑Ò∑¢ÀÕÕÍ±œ
+	if(DMA_GetITStatus(DMA1_IT_TC4)== SET)
+	{
+		LED1(OFF);
+	}
+
+	DMA_ClearFlag(DMA1_FLAG_TC4);
+}
+
+
 //void DMA1_Channel4_IRQHandler(void)
 //{
 //	LED1(OFF);
 //}
-extern __IO u16 ADC_ConvertedValue;
-void ADC1_2_IRQHandler(void)
-{
-	if (ADC_GetITStatus(ADC1,ADC_IT_EOC)==SET)
-	{
-		ADC_ConvertedValue = ADC_GetConversionValue(ADC1);
-	}
-	GPIO_WriteBit(GPIOC,GPIO_Pin_1,(BitAction)(1-(GPIO_ReadOutputDataBit(GPIOC,GPIO_Pin_1))));
 
-	ADC_ClearITPendingBit(ADC1,ADC_IT_EOC);
 
-}
+//extern __IO u16 ADC_ConvertedValue;
+//void ADC1_2_IRQHandler(void)
+//{
+//	if (ADC_GetITStatus(ADC1,ADC_IT_EOC)==SET)
+//	{
+//		ADC_ConvertedValue = ADC_GetConversionValue(ADC1);
+//	}
+//	GPIO_WriteBit(GPIOC,GPIO_Pin_1,(BitAction)(1-(GPIO_ReadOutputDataBit(GPIOC,GPIO_Pin_1))));
+
+//	ADC_ClearITPendingBit(ADC1,ADC_IT_EOC);
+
+//}
 
 /******************* (C) COPYRIGHT 2011 STMicroelectronics *****END OF FILE****/

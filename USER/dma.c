@@ -31,8 +31,15 @@ void DMA_Config(void)
 
 	DMA_NVIC_Config();
 
+	// 用默认值重置DMA1
+	DMA_DeInit(DMA1_Channel4);
+
 	/* 设置缓存器长度 */
-	//dma_initStructure.DMA_BufferSize = SEND_BUFF_LENGTH;
+	dma_initStructure.DMA_BufferSize = SEND_BUFF_LENGTH;
+
+	/*  设置传输数据大小 */
+	dma_initStructure.DMA_MemoryDataSize = DMA_MemoryDataSize_Byte;
+	dma_initStructure.DMA_PeripheralDataSize = DMA_PeripheralDataSize_Byte;
 
 	/*  设置数据传输方向: 内存 -> 外设  */
 	dma_initStructure.DMA_DIR = DMA_DIR_PeripheralDST;
@@ -43,9 +50,6 @@ void DMA_Config(void)
 	/* 设置内存地址与外设地址  */
 	dma_initStructure.DMA_MemoryBaseAddr = (u32)SendBuff;
 	dma_initStructure.DMA_PeripheralBaseAddr = USART1_DR_BASE;
-
-	/*  设置传输数据大小 */
-	dma_initStructure.DMA_MemoryDataSize = SEND_BUFF_LENGTH;
 
 	/*  内存地址每次读取时自动加一,外设不变 */
 	dma_initStructure.DMA_MemoryInc = DMA_MemoryInc_Enable;
@@ -60,5 +64,7 @@ void DMA_Config(void)
 	DMA_Init(DMA1_Channel4, &dma_initStructure);
 
 	DMA_Cmd(DMA1_Channel4, ENABLE);
+
+	DMA_ITConfig(DMA1_Channel4, DMA_IT_TC, ENABLE);
 
 }

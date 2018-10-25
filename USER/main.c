@@ -24,51 +24,69 @@
 #include "delay.h"
 #include <stdio.h>
 
+
+
+void DMA2Usart1(void);
+
+int main(void)
+{
+	DMA2Usart1();
+
+}
+
+#if(0)
+
+#include "led.h"
+#include "usart.h"
+/*  通过串口将数据发送出去 */
+void Usart1(void)
+{
+
+	USART1_Config();
+	LED_GPIO_Config();
+
+	LED2(ON);
+
+	while(1)
+	{
+		USART_SendMessage('w');
+		delay_ms(0xff);
+	};
+}
+#endif
+
+#if(0)
+
+#include "dma.h"
+#include "usart.h"
+extern u8 SendBuff[SEND_BUFF_LENGTH];
+
+/*  通过DMA将变量中的数据发送到USART中发送 */
+void DMA2Usart1(void)
+{
+	u32 i;
+
+	for(i=0;i<SEND_BUFF_LENGTH;i++)
+	{
+		SendBuff[i] = 'w';
+	}
+
+	USART1_Config();
+	DMA_Config();
+
+	/*  DMA开始向USART发送数据 */
+	USART_DMACmd( USART1, USART_DMAReq_Tx, ENABLE);
+
+	while(1);
+}
+#endif
+
+#if(0)
 #include "adc.h"
 #include "led.h"
 
 extern __IO u16 ADC_ConvertedValue;
 float ADC_Result;
-
-
-
-void ADCAndDMA(void);
-
-int main(void)
-{
-	ADCAndDMA();
-
-}
-
-
-#if(0)
-
-#include "dma.h"
-#include "led.h"
-#include "usart.h"
-extern u8 SendBuff[SEND_BUFF_LENGTH];
-
-void DMA2Usart1(void)
-{
-	u32 i;
-
-	USART1_Config();
-	DMA_Config();
-	LED_GPIO_Config();
-
-	for(i=0;i<SEND_BUFF_LENGTH;i++)
-	{
-		SendBuff[i] = 0xff;
-	}
-
-	/*  DMA开始向USART发送数据 */
-	USART_DMACmd( USART1, USART_DMAReq_Tx, ENABLE);
-
-	LED1(ON);
-
-	while(1);
-}
-#endif
 
 /*  通过DMA将ADC采集结果发送到USART1中 */
 void ADCAndDMA(void)
@@ -88,3 +106,4 @@ void ADCAndDMA(void)
 		}
 	}
 }
+#endif

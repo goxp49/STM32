@@ -5,10 +5,10 @@
 
 
 #define SEND_BUFF_LENGTH 		5000
-#define USART1_DR_BASE	 		0x40013804
+#define USART1_DR_BASE	 		(USART1_BASE + 0x04)
 
 
-void NVIC_Config(void);
+void DMA_Config(void);
 void DMA_NVIC_Config(void);
 
 
