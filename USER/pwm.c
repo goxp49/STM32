@@ -45,7 +45,7 @@ void PWM_Mode_Config(void)
 	u16 CCR1_Val = 900;
 	u16 CCR2_Val = 500;
 	u16 CCR3_Val = 300;
-	u16 CCR4_Val = 100;
+	u16 CCR4_Val = 0;
 
 	/* TIME BASE …Ë∂® */
 
