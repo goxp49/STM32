@@ -15,6 +15,7 @@
 
 
 void Systick_Config(uint32_t ticks);
+void Delay_SysTick(uint32_t ntime);
 
 
 

@@ -8,10 +8,14 @@
 **********************************************************************************/
 
 #include "systick.h"
+#include "led.h"
+
+u32 TimingDelay = 0;
 
 void Systick_Config(uint32_t ticks)
 {
-	
+	LED_GPIO_Config();
+
 	//检查定时器启动是否正常
 	while(SysTick_Config(ticks))
 	{
@@ -23,4 +27,17 @@ void Systick_Config(uint32_t ticks)
 }
 
 
+void Delay_SysTick(uint32_t ntime)
+{
+	//先判断时间数是否大于0
+	if(ntime != 0)
+	{
+		TimingDelay = ntime;
+
+		//开启计数器
+		SysTick->CTRL |= SysTick_CTRL_ENABLE_Msk;
+
+		while(TimingDelay);
+	}
+}
 

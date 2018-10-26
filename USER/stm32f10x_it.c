@@ -132,8 +132,18 @@ void PendSV_Handler(void)
   * @param  None
   * @retval None
   */
+
+extern u32 TimingDelay;
 void SysTick_Handler(void)
 {
+//	if(TimingDelay != 0)
+//	{
+//		TimingDelay--;
+//	}else{
+
+//		//¹Ø±Õ¶¨Ê±Æ÷
+//		SysTick->CTRL &= ~SysTick_CTRL_ENABLE_Msk;
+//	}
 }
 
 /******************************************************************************/

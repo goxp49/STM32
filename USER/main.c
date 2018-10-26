@@ -25,12 +25,13 @@
 #include <stdio.h>
 
 
+#include "pwm.h"
 
-void DMA2Usart1(void);
+void timer_pwm(void);
 
 int main(void)
 {
-	DMA2Usart1();
+	timer_pwm();
 
 }
 
@@ -106,4 +107,34 @@ void ADCAndDMA(void)
 		}
 	}
 }
+#endif
+
+#if(0)
+#include "systick.h"
+#include "led.h"
+
+void Systick(void)
+{
+	//设置定时器每次中断时间为1ms
+	Systick_Config(SYSTICK_DELAY_1MS);
+
+	LED2(ON);
+
+	while(1)
+	{
+		LED1_Switch();
+		Delay_SysTick(500);
+	}
+}
+
+#endif
+
+#if(1)
+
+void timer_pwm(void)
+{
+	PWM_Config();
+	while(1);
+}
+
 #endif
