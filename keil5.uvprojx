@@ -572,6 +572,11 @@
               <FileType>1</FileType>
               <FilePath>.\USER\usart.c</FilePath>
             </File>
+            <File>
+              <FileName>iic_eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\USER\iic_eeprom.c</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>

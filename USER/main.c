@@ -24,14 +24,18 @@
 #include "delay.h"
 #include <stdio.h>
 
+#include "iic_eeprom.h"
 
-#include "pwm.h"
+#define  EEP_Firstpage      0x00
+u8 I2c_Buf_Write[256];
+u8 I2c_Buf_Read[256];
 
-void timer_pwm(void);
+
+void I2C_EEPROM(void);
 
 int main(void)
 {
-	timer_pwm();
+	I2C_EEPROM();
 
 }
 
@@ -82,6 +86,11 @@ void DMA2Usart1(void)
 }
 #endif
 
+/*****************************************************************  
+*
+*			通过DMA将ADC采集结果发送到USART1中 
+*
+*****************************************************************/
 #if(0)
 #include "adc.h"
 #include "led.h"
@@ -89,7 +98,6 @@ void DMA2Usart1(void)
 extern __IO u16 ADC_ConvertedValue;
 float ADC_Result;
 
-/*  通过DMA将ADC采集结果发送到USART1中 */
 void ADCAndDMA(void)
 {
 	ADC1_IT_Config();
@@ -108,6 +116,12 @@ void ADCAndDMA(void)
 	}
 }
 #endif
+
+/*****************************************************************  
+*
+*			验证systick定时是否成功
+*
+*****************************************************************/
 
 #if(0)
 #include "systick.h"
@@ -129,7 +143,16 @@ void Systick(void)
 
 #endif
 
-#if(1)
+
+/*****************************************************************  
+*
+*			验证timer作为PWM输出是否成功
+*
+*****************************************************************/
+
+#if(0)
+
+#include "pwm.h"
 
 void timer_pwm(void)
 {
@@ -138,3 +161,38 @@ void timer_pwm(void)
 }
 
 #endif
+
+/*****************************************************************  
+*
+*			验证I2C通信是否成功
+*
+*****************************************************************/
+
+void I2C_EEPROM(void)
+{
+	u16 i;
+
+	I2C_EEPROM_Config();
+
+    
+	for ( i=0; i<=255; i++ ) //填充缓冲
+  	{   
+    	I2c_Buf_Write[i] = i;
+
+   	}
+
+  	//将I2c_Buf_Write中顺序递增的数据写入EERPOM中 
+	//I2C_EE_BufferWrite( I2c_Buf_Write, EEP_Firstpage, 256);	 
+  
+  	//将EEPROM读出数据顺序保持到I2c_Buf_Read中 
+	//I2C_EE_BufferRead(I2c_Buf_Read, EEP_Firstpage, 256); 
+
+	
+
+	for ( i=0; i<=255; i++ )
+	{
+		I2C_EE_ByteWrite(&I2c_Buf_Write[i], EEPROM_ADDRESS);
+
+	};
+	
+}
