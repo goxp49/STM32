@@ -56,6 +56,10 @@ void I2C_MODE_Config(void)
 	I2C_Init(I2C1, &i2c_initStructure);
 
 	I2C_Cmd(I2C1, ENABLE);
+
+	/*允许1字节1应答模式*/
+	I2C_AcknowledgeConfig(I2C1, DISABLE);// test
+	
 	
 }
 
