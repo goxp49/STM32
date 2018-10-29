@@ -24,18 +24,13 @@
 #include "delay.h"
 #include <stdio.h>
 
-#include "iic_eeprom.h"
+#include "spi.h"
 
-#define  EEP_Firstpage      0x00
-u8 I2c_Buf_Write[256];
-u8 I2c_Buf_Read[256];
-
-
-void I2C_EEPROM(void);
+void SPI_Flash(void);
 
 int main(void)
 {
-	I2C_EEPROM();
+	SPI_Flash();
 
 }
 
@@ -86,9 +81,9 @@ void DMA2Usart1(void)
 }
 #endif
 
-/*****************************************************************  
+/*****************************************************************
 *
-*			通过DMA将ADC采集结果发送到USART1中 
+*			通过DMA将ADC采集结果发送到USART1中
 *
 *****************************************************************/
 #if(0)
@@ -117,7 +112,7 @@ void ADCAndDMA(void)
 }
 #endif
 
-/*****************************************************************  
+/*****************************************************************
 *
 *			验证systick定时是否成功
 *
@@ -144,7 +139,7 @@ void Systick(void)
 #endif
 
 
-/*****************************************************************  
+/*****************************************************************
 *
 *			验证timer作为PWM输出是否成功
 *
@@ -162,11 +157,19 @@ void timer_pwm(void)
 
 #endif
 
-/*****************************************************************  
+
+/*****************************************************************
 *
 *			验证I2C通信是否成功
 *
 *****************************************************************/
+#if(0)
+
+#include "iic_eeprom.h"
+
+#define  EEP_Firstpage      0x00
+u8 I2c_Buf_Write[256];
+u8 I2c_Buf_Read[256];
 
 void I2C_EEPROM(void)
 {
@@ -174,25 +177,48 @@ void I2C_EEPROM(void)
 
 	I2C_EEPROM_Config();
 
-    
+
 	for ( i=0; i<=255; i++ ) //填充缓冲
-  	{   
+  	{
     	I2c_Buf_Write[i] = i;
 
    	}
 
-  	//将I2c_Buf_Write中顺序递增的数据写入EERPOM中 
-	//I2C_EE_BufferWrite( I2c_Buf_Write, EEP_Firstpage, 256);	 
-  
-  	//将EEPROM读出数据顺序保持到I2c_Buf_Read中 
-	//I2C_EE_BufferRead(I2c_Buf_Read, EEP_Firstpage, 256); 
+  	//将I2c_Buf_Write中顺序递增的数据写入EERPOM中
+	//I2C_EE_BufferWrite( I2c_Buf_Write, EEP_Firstpage, 256);
 
-	
+  	//将EEPROM读出数据顺序保持到I2c_Buf_Read中
+	//I2C_EE_BufferRead(I2c_Buf_Read, EEP_Firstpage, 256);
+
+
 
 	for ( i=0; i<=255; i++ )
 	{
 		I2C_EE_ByteWrite(&I2c_Buf_Write[i], EEPROM_ADDRESS);
 
 	};
-	
+
 }
+
+#endif
+
+
+/*****************************************************************
+*
+*			验证SPI通信是否成功
+*
+*****************************************************************/
+
+#if(1)
+
+void SPI_Flash(void)
+{
+	SPI_Config();
+
+	while(1)
+	{
+		FLASH_SendByte(0xff);
+	}
+}
+
+#endif
