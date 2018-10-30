@@ -7,8 +7,12 @@
 
 
 
-
-
+void CAN_Config(void);
+void CAN_GPIO_INIT(void);
+void CAN_NVIC_INIT(void);
+void CAN_MODE_INIT(void);
+void CAN_FILTER_INIT(void);
+void CAN_SendMessage(void);
 
 
 

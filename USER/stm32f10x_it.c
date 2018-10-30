@@ -158,6 +158,35 @@ void SysTick_Handler(void)
   * @param  None
   * @retval None
   */
+
+
+void USB_LP_CAN1_RX0_IRQHandler(void)
+{
+	CanRxMsg RxMessage;
+
+	RxMessage.StdId=0x00;
+	RxMessage.ExtId=0x00;
+	RxMessage.IDE=0;
+	RxMessage.DLC=0;
+	RxMessage.FMI=0;
+	RxMessage.Data[0]=0x00;
+	RxMessage.Data[1]=0x00;
+
+	CAN_Receive(CAN1, CAN_FIFO0, &RxMessage);
+
+	if((RxMessage.IDE==CAN_ID_STD)&&
+	   (RxMessage.DLC==2)         &&
+	   ((RxMessage.Data[1]|RxMessage.Data[0]<<8)==0xFF00))
+	{
+		//LED1(ON);
+		LED1_Switch();
+	}
+	else
+	{
+		LED3(ON);
+	}
+}
+
 /*void PPP_IRQHandler(void)
 {
 }*/
@@ -166,16 +195,16 @@ void SysTick_Handler(void)
   * @}
   */
 
-void DMA1_Channel4_IRQHandler(void)
-{
-	//¼ì²âÊÇ·ñ·¢ËÍÍê±Ï
-	if(DMA_GetITStatus(DMA1_IT_TC4)== SET)
-	{
-		LED1(OFF);
-	}
+//void DMA1_Channel4_IRQHandler(void)
+//{
+//	//¼ì²âÊÇ·ñ·¢ËÍÍê±Ï
+//	if(DMA_GetITStatus(DMA1_IT_TC4)== SET)
+//	{
+//		LED1(OFF);
+//	}
 
-	DMA_ClearFlag(DMA1_FLAG_TC4);
-}
+//	DMA_ClearFlag(DMA1_FLAG_TC4);
+//}
 
 
 //void DMA1_Channel4_IRQHandler(void)

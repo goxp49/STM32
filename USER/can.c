@@ -9,6 +9,8 @@
 
 #include "can.h"
 
+CanTxMsg TxMessage;
+CanRxMsg RxMessage;
 
 
 void CAN_Config(void)
@@ -16,6 +18,7 @@ void CAN_Config(void)
 	CAN_GPIO_INIT();
 	CAN_NVIC_INIT();
 	CAN_MODE_INIT();
+	CAN_FILTER_INIT();
 }
 
 
@@ -29,7 +32,7 @@ void CAN_GPIO_INIT(void)
 	// RX --> 11 , TX --> 12;
 	gpio_initStructure.GPIO_Mode = GPIO_Mode_AF_PP;
 
-	gpio_initStructure.GPIO_Pin = GPIO_Pin_12
+	gpio_initStructure.GPIO_Pin = GPIO_Pin_12;
 
 	gpio_initStructure.GPIO_Speed = GPIO_Speed_50MHz;
 
@@ -37,7 +40,7 @@ void CAN_GPIO_INIT(void)
 
 	gpio_initStructure.GPIO_Mode = GPIO_Mode_IPU;
 
-	gpio_initStructure.GPIO_Pin = GPIO_Pin_11
+	gpio_initStructure.GPIO_Pin = GPIO_Pin_11;
 
 	GPIO_Init(GPIOA, &gpio_initStructure);
 
@@ -68,13 +71,86 @@ void CAN_MODE_INIT(void)
 {
 	CAN_InitTypeDef can_initStructure;
 
-	//CAN_DeInit(CAN1);
+	/*  初始化寄存器 */
+	CAN_DeInit(CAN1);
+	CAN_StructInit(&can_initStructure);
+
+	//自动退出离线状态功能
+	can_initStructure.CAN_ABOM = ENABLE;
+
+	//自动唤醒状态功能
+	can_initStructure.CAN_AWUM = ENABLE;
+
+	can_initStructure.CAN_BS1 = CAN_BS1_6tq;
+
+	can_initStructure.CAN_BS2 = CAN_BS1_3tq;
+
+	//can_initStructure.CAN_Mode = CAN_Mode_Normal;
+	can_initStructure.CAN_Mode = CAN_Mode_LoopBack;
+
+	can_initStructure.CAN_NART = DISABLE;
+
+	can_initStructure.CAN_Prescaler = 4;
+
+	can_initStructure.CAN_RFLM = DISABLE;
+
+	can_initStructure.CAN_SJW = CAN_SJW_2tq;
+
+	can_initStructure.CAN_TTCM = DISABLE;
+
+	can_initStructure.CAN_TXFP = DISABLE;
+
+	CAN_Init(CAN1, &can_initStructure);
+
 }
 
 
+void CAN_FILTER_INIT(void)
+{
+
+	CAN_FilterInitTypeDef filter_initStruture;
+
+	filter_initStruture.CAN_FilterActivation = ENABLE;
+
+	filter_initStruture.CAN_FilterFIFOAssignment = CAN_Filter_FIFO0;
+
+	//要过滤的ID
+	filter_initStruture.CAN_FilterIdHigh = 0xFFFF;
+	filter_initStruture.CAN_FilterIdLow = 0xFFFF;
+
+	//选择哪些ID位必须匹配(1为必须)
+	filter_initStruture.CAN_FilterMaskIdHigh = 0x0000;
+	filter_initStruture.CAN_FilterMaskIdLow= 0x0000;
+
+	filter_initStruture.CAN_FilterMode = CAN_FilterMode_IdMask;
+
+	filter_initStruture.CAN_FilterNumber = 0;
+
+	filter_initStruture.CAN_FilterScale = CAN_FilterScale_32bit;
+
+	CAN_FilterInit(&filter_initStruture);
+
+	//使能过滤器中断
+	CAN_ITConfig(CAN1, CAN_IT_FMP0, ENABLE);
+
+}
 
 
+void CAN_SendMessage(void)
+{
+	u8 TransmitMailbox=0;
 
+	TxMessage.StdId=0x11;
+	TxMessage.RTR=CAN_RTR_DATA;
+	TxMessage.IDE=CAN_ID_STD;
+	TxMessage.DLC=2;
+	TxMessage.Data[0]=0xFF;
+	TxMessage.Data[1]=0x00;
+
+	TransmitMailbox = CAN_Transmit(CAN1, &TxMessage);
+
+	while(CAN_TransmitStatus(CAN1, TransmitMailbox) != CANTXOK);
+}
 
 
 
